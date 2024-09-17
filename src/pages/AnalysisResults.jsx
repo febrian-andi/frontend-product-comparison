@@ -1,11 +1,59 @@
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import CrownImage from "../assets/crown.png";
 import RobotImage from "../assets/robot.png";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import AnalysisProcess from "./AnalysisProcess";
 
 function AnalysisResults() {
+  const [count, setCount] = useState(0);
+  const [showMainContent, setShowMainContent] = useState(false);
+
+  const handleIncrementCount = () => {
+    setCount(count + 1);
+  };
+  const handleDecrementCount = () => {
+    if (count > 0) {
+      setCount(count - 1);
+    }
+  };
+
+  useEffect(() => {
+    // Show AnalysisProcess for 2 seconds, then switch to main content
+    const timer = setTimeout(() => {
+      setShowMainContent(true);
+    }, 1000);
+
+    // Cleanup the timer when the component unmounts
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!showMainContent) {
+    return <AnalysisProcess />;
+  }
+
   return (
-    <div className="container mx-auto">
+    <div>
+      <nav className="text-gray-600 mb-4">
+        <ol className="list-reset flex">
+          <li className="text-sm">
+            Beranda
+          </li>
+          <li>
+            <span className="mx-1">/</span>
+          </li>
+          <li className="text-sm text-gray-600">
+            <a href="/">
+              Bandingkan Produk
+            </a>
+          </li>
+          <li>
+            <span className="mx-1">/</span>
+          </li>
+          <li className="text-sm font-bold text-gray-600">Hasil Analisa Produk</li>
+        </ol>
+      </nav>
       <div className="flex justify-center">
         <div>
           <div className="flex justify-center">
@@ -44,7 +92,7 @@ function AnalysisResults() {
       <div className="mt-8">
         <div className="flex justify-center items-center">
           <img src={RobotImage} style={{ height: "180px" }} />
-          <div className="ml-4">
+          <div className="ml-8">
             <p className="text-justify">
               Setelah menganalisis kedua produk TV Samsung, berikut adalah
               beberapa alasan mengapa TV 2 bisa menjadi pilihan yang lebih tepat
@@ -66,41 +114,56 @@ function AnalysisResults() {
               pengguna, Rekmendasi ke 1 adalah pilihan yang cerdas.
             </p>
           </div>
-          <div class="p-3 ml-4 rounded-lg border border-red-800 shadow-md w-full max-w-md mx-auto">
+          <div
+            class="p-3 ml-8 border  rounded-lg shadow-md"
+            style={{ width: "1100px" }}
+          >
             <h2 class="text-base font-bold mb-4">Atur Pembelian</h2>
             <div class="flex items-center justify-between mb-4">
               <div>
                 <p class="text-xs text-gray-500 mb-2">Jumlah Pembelian</p>
                 <div class="flex items-center">
-                  <button class="border shadow-md hover:bg-gray-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
-                    <MinusIcon className="size-5"/>
+                  <button
+                    onClick={handleDecrementCount}
+                    class="border shadow-md hover:bg-gray-400 text-gray-800 font-bold p-2 rounded inline-flex items-center"
+                  >
+                    <MinusIcon className="size-5" />
                   </button>
-                  <span class="text-gray-900 font-bold mx-2">1</span>
-                  <button class="border shadow-md hover:bg-gray-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
-                    <PlusIcon className="size-5"/>
+                  <span class="text-gray-900 font-bold mx-2">{count}</span>
+                  <button
+                    onClick={handleIncrementCount}
+                    class="border shadow-md hover:bg-gray-400 text-gray-800 font-bold p-2 rounded inline-flex items-center"
+                  >
+                    <PlusIcon className="size-5" />
                   </button>
-                  <p class="text-gray-700 ml-4">Stok: 30</p>
+                  <p class="text-sm text-gray-700 ml-4">Stok: 30</p>
                 </div>
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-4">
               <h3 class="text-sm font-bold mb-1">Total Harga</h3>
-              <p class="text-2xl font-bold text-cyan-600">Rp7.900.901</p>
+              <p class="text-xl font-bold text-cyan-600">Rp7.900.901</p>
               <div className="mt-1 flex justify-between">
                 <p class="text-sm text-gray-500">Rp7.900.901</p>
                 <p class="text-sm text-gray-500">(inc. PPN)</p>
               </div>
             </div>
-            <div class="flex justify-between">
-              <button class="border border-cyan-600 text-cyan-600 text-xs rounded">
+            <div className="flex items-center mb-4">
+              <PencilIcon className="size-3 text-cyan-600 mr-1" />
+              <p className="text-xs text-cyan-600 font-semibold">
+                Catatan Untuk Penjual
+              </p>
+            </div>
+            <div class="flex justify-between mb-3">
+              <button class="py-2 w-1/2 mr-2 border border-cyan-600 text-cyan-600 text-sm font-medium rounded hover:bg-cyan-700 hover:text-white">
                 Chat Penjual
               </button>
-              <button class="flex items-center bg-cyan-600 hover:bg-cyan-700 text-white  rounded">
-                <PlusIcon className="size-4"/>
+              <button class="py-2 w-1/2 flex items-center justify-center bg-cyan-600 text-white text-sm font-medium rounded hover:bg-cyan-700">
+                <PlusIcon className="size-4" />
                 Keranjang
               </button>
             </div>
-            <button class="border border-cyan-600 text-cyan-600 text-xs rounded">
+            <button class="py-2 w-full border border-cyan-600 text-cyan-600 text-sm font-medium rounded hover:bg-cyan-700 hover:text-white">
               Beli Sekarang
             </button>
           </div>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { PrinterIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { ClipboardIcon } from "@heroicons/react/24/solid";
 import TvSamsungImage from "../assets/tv-samsung.jpg";
@@ -17,13 +17,13 @@ function ProductComparison() {
       <div>
         <nav className="text-gray-600 mb-4">
           <ol className="list-reset flex">
+            <li className="text-sm">Beranda</li>
             <li>
-              <a href="#">Beranda</a>
+              <span className="mx-1">/</span>
             </li>
-            <li>
-              <span className="mx-2">/</span>
+            <li className="text-sm font-bold text-gray-600">
+              Bandingkan Produk
             </li>
-            <li className="font-medium text-gray-600">Bandingkan Produk</li>
           </ol>
         </nav>
         <div className="flex justify-end mb-3">
@@ -173,8 +173,11 @@ function ProductComparison() {
           </table>
         </div>
         <div className="flex justify-center mt-3">
-          <Link to="/analysis-results" className="flex border border-cyan-600 text-white bg-cyan-600 rounded-md p-1 hover:bg-cyan-800">
-            <ClipboardIcon className="size-5 mr-1"/>
+          <Link
+            to="/analysis-results"
+            className="flex border border-cyan-600 text-white bg-cyan-600 rounded-md p-1 hover:bg-cyan-800"
+          >
+            <ClipboardIcon className="size-5 mr-1" />
             Cek Analisis Lengkap
           </Link>
         </div>

@@ -1,14 +1,15 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProductComparison from "./pages/ProductComparison";
 import AnalysisResults from "./pages/AnalysisResults";
+import AnalysisProcess from "./pages/AnalysisProcess";
 
 function App() {
   return (
-    <div className="container mx-auto py-4 lg:px-40">
+    <div className="container mx-auto py-4">
       <Router>
         <Routes>
-          <Route exact path="/" element={<ProductComparison />} />
-          <Route exact path="/analysis-results" element={<AnalysisResults />} />
+          <Route path="/" element={<ProductComparison />} />
+          <Route path="/analysis-results" element={<AnalysisResults />} />
         </Routes>
       </Router>
     </div>
