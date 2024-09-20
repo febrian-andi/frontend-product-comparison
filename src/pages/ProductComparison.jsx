@@ -17,11 +17,11 @@ function ProductComparison() {
       <div>
         <nav className="text-gray-600 mb-4">
           <ol className="list-reset flex">
-            <li className="text-sm">Beranda</li>
+            <li className="text-xs md:text-sm">Beranda</li>
             <li>
               <span className="mx-1">/</span>
             </li>
-            <li className="text-sm font-bold text-gray-600">
+            <li className="text-xs md:text-sm font-bold text-gray-600">
               Bandingkan Produk
             </li>
           </ol>
@@ -32,7 +32,7 @@ function ProductComparison() {
             Cetak Perbandingan
           </button>
         </div>
-        <div className="overflow-x-auto border border-gray-200 rounded-2xl">
+        <div className="overflow-x-auto border border-gray-200 rounded-2xl min-w-max">
           <table className="min-w-full table-auto">
             <tbody>
               <tr>
@@ -51,7 +51,6 @@ function ProductComparison() {
                         alt="Samsung Smart TV"
                         className="w-64 mx-auto"
                       />
-
                       <h2 className="text-lg font-semibold text-center mt-4">
                         TV LED Samsung 43 Inch 43N5001
                       </h2>
@@ -61,7 +60,7 @@ function ProductComparison() {
                             <TrashIcon className="size-7 text-gray-400 hover:text-red-500" />
                           </button>
                           <button className="border border-cyan-600 rounded-md p-1 w-48 ms-2 text-cyan-500 font-medium text-center hover:bg-cyan-600  hover:text-white">
-                            <p>+keranjang</p>
+                            <p className="text-sm">+keranjang</p>
                           </button>
                         </div>
                       </div>
@@ -72,7 +71,7 @@ function ProductComparison() {
                   <div className="flex justify-center">
                     <button
                       onClick={toggleModal}
-                      className="border border-cyan-600 text-cyan-500 py-2 px-4 rounded-md font-medium hover:bg-cyan-600 hover:text-white"
+                      className="text-xs border border-cyan-600 text-cyan-500 py-2 px-4 rounded-md font-medium hover:bg-cyan-600 hover:text-white"
                     >
                       Cari Produk
                     </button>
@@ -82,7 +81,7 @@ function ProductComparison() {
                   <div className="flex justify-center">
                     <button
                       onClick={toggleModal}
-                      className="border border-cyan-600 text-cyan-500 py-2 px-4 rounded-md font-medium hover:bg-cyan-600 hover:text-white"
+                      className="text-xs border border-cyan-600 text-cyan-500 py-2 px-4 rounded-md font-medium hover:bg-cyan-600 hover:text-white"
                     >
                       Cari Produk
                     </button>
@@ -171,7 +170,6 @@ function ProductComparison() {
               </tr>
             </tbody>
           </table>
-        </div>
         <div className="flex justify-center mt-3">
           <Link
             to="/analysis-results"
@@ -180,6 +178,7 @@ function ProductComparison() {
             <ClipboardIcon className="size-5 mr-1" />
             Cek Analisis Lengkap
           </Link>
+        </div>
         </div>
       </div>
       <ProductListModal isOpenModal={isOpenModal} toggleModal={toggleModal} />

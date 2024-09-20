@@ -5,7 +5,7 @@ import AnalysisProcess from "./pages/AnalysisProcess";
 
 function App() {
   return (
-    <div className="container mx-auto py-4">
+    <div className="container p-4">
       <Router>
         <Routes>
           <Route path="/" element={<ProductComparison />} />

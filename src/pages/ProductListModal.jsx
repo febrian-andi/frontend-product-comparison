@@ -13,8 +13,8 @@ function ProductListModal({ isOpenModal, toggleModal }) {
           <h1 className="text-md font-semibold mb-2">Pilih Produk</h1>
           <XMarkIcon onClick={toggleModal} className="size-7 text-gray-700 cursor-pointer"/>
         </div>
-        <div className="flex justify-between items-center mb-6">
-          <div className="relative w-80">
+        <div className="sm:flex justify-between items-center mb-6">
+          <div className="relative w-80 mb-3 sm:mb-0 mx-auto sm:mx-0">
             <input
               type="text"
               placeholder="Cari produk, jasa, atau vendor"
@@ -24,14 +24,14 @@ function ProductListModal({ isOpenModal, toggleModal }) {
               <MagnifyingGlassIcon className="size-7 text-gray-500" />
             </span>
           </div>
-          <div>
+          <div className="flex justify-center">
             <button className="text-gray-700">Urutkan</button>
             <select className="border ml-2 rounded-lg p-2">
               <option>Urutkan Berdasarkan</option>
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-6 gap-y-2 overflow-y-auto max-h-96 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-2 overflow-y-auto h-4/6 md:max-h-full justify-items-center">
           {products.map((_, index) => (
             <ProductCard key={index} />
           ))}
