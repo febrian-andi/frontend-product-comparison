@@ -1,25 +1,67 @@
 import { useState, useEffect } from "react";
-import ProductCard from "../components/ProductCard";
+import { useLocation } from "react-router-dom";
+import formattedDescription from "../utils/formattedDescription";
+import ProductCard from "../components/product-list-modal/ProductCard";
 import CrownImage from "../assets/crown.png";
 import RobotImage from "../assets/robot.png";
 import AnalysisProcess from "./AnalysisProcess";
-import PurchaseCard from "../components/PurchaseCard";
+import PurchaseCard from "../components/analysis-results/PurchaseCard";
+import axios from "axios";
 
 function AnalysisResults() {
-  const [showMainContent, setShowMainContent] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [analysisResults, setAnalysisResults] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const productIds = queryParams.get("product_ids")?.split(",") || [];
 
   useEffect(() => {
-    // Show AnalysisProcess for 2 seconds, then switch to main content
-    const timer = setTimeout(() => {
-      setShowMainContent(true);
-    }, 1000);
+    const fetchProducts = async () => {
+      try {
+        const productPromises = productIds.map(id => 
+          axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`).then(response => response.data)
+        );
+        const productData = await Promise.all(productPromises);
+        setProducts(productData);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+        setError("Failed to load product data. Please try again later.");
+      }
+    };
 
-    // Cleanup the timer when the component unmounts
-    return () => clearTimeout(timer);
+    if (productIds.length > 0) {
+      fetchProducts();
+    }
+  }, [productIds]);
+
+  useEffect(() => {
+    const fetchAnalysisResults = async () => {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai-best-products`, {
+          product_ids: productIds
+        });
+        setAnalysisResults(response.data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (productIds.length > 0) {
+      fetchAnalysisResults();
+    }
   }, []);
 
-  if (!showMainContent) {
+  if (isLoading) {
     return <AnalysisProcess />;
+  }
+
+  if (error) {
+    return <div className="text-red-600">{error}</div>;
   }
 
   return (
@@ -37,77 +79,50 @@ function AnalysisResults() {
             <span className="mx-1">/</span>
           </li>
           <li className="text-xs md:text-sm font-bold text-gray-600">
-            Hasil Analisa Produk
+            Hasil Analisis Produk
           </li>
         </ol>
       </nav>
-      <div className="grid md:grid-cols-3 gap-x-3 w-fit justify-items-center  mx-auto">
-        <div className="mb-3">
-          <div className="flex justify-center">
-            <img src={CrownImage} style={{ width: "55px" }} />
+      <div className="grid md:grid-cols-3 gap-x-3 w-fit justify-items-center mx-auto">
+        {products.map((product, index) => (
+          <div className="mb-3" key={product.product_id}>
+            {/* <div className="flex justify-center">
+              {product.product_id == analysisResults.best_product_id ?
+                <img src={CrownImage} style={{ width: "55px" }} alt="Crown" />
+                : <div style={{ width: "55px" }}></div>
+              }{product.product_id == analysisResults.best_product_id ?
+                <p>Rekomendasi</p>
+                : <p>Bukan</p>
+              }
+            </div> */}
+            {/* "03c1cf98-2721-4eaf-ab90-b7ee793ea2e6" */}
+            <div className="border border-cyan-600 p-2 pt-0 bg-cyan-600 rounded-md w-fit">
+              <h2 className="text-sm text-center text-white font-medium my-0.5">
+                Produk {index + 1}
+              </h2>
+              <ProductCard product={product} />
+            </div>
           </div>
-          <div className="border border-cyan-600 p-2 pt-0 bg-cyan-600 rounded-md w-fit">
-            <h2 className="text-sm text-center text-white font-medium my-0.5">
-              Rekomendasi 1
-            </h2>
-            <ProductCard />
-          </div>
-        </div>
-        <div className="mb-3">
-          <div className="flex justify-center hidden md:block">
-            <div style={{ height: "55px" }}></div>
-          </div>
-          <div className="border border-cyan-600 p-2 pt-0 bg-cyan-600 rounded-md w-fit">
-            <h2 className="text-sm text-center text-white font-medium my-0.5">
-              Rekomendasi 2
-            </h2>
-            <ProductCard />
-          </div>
-        </div>
-        <div className="mb-3">
-          <div className="flex justify-center hidden md:block">
-            <div style={{ height: "55px" }}></div>
-          </div>
-          <div className="border border-cyan-600 p-2 pt-0 bg-cyan-600 rounded-md w-fit">
-            <h2 className="text-sm text-center text-white font-medium my-0.5">
-              Rekomendasi 3
-            </h2>
-            <ProductCard />
-          </div>
-        </div>
+        ))}
       </div>
       <div className="mt-8">
         <div className="sm:grid sm:grid-cols-3 lg:grid-cols-4 justify-items-center px-4 md:px-0">
           <div className="flex justify-center items-center mb-4 lg:mb-0 ">
-            <img src={RobotImage} style={{ height: "180px" }} />
+            <img src={RobotImage} style={{ height: "180px" }} alt="Robot" />
           </div>
-          <div className=" col-span-2 px-4">
-            <p className="text-justify">
-              Setelah menganalisis kedua produk TV Samsung, berikut adalah
-              beberapa alasan mengapa TV 2 bisa menjadi pilihan yang lebih tepat
-              untuk kamu.
-              <br /> Rekomendasi 1 dengan harga Rp7.900.901 menawarkan layar 50"
-              yang pas untuk ruang tamu atau kamar tidur, serta berat 17,7 kg
-              yang lebih ringan dan mudah dipindahkan. Menariknya, meskipun
-              harganya lebih terjangkau, TV ini memiliki rating lebih tinggi,
-              yaitu 8,1/10, dibandingkan TV 1, yang hanya mendapat 7,9/10.
-              Selain itu, TV 2 juga telah terjual sebanyak 54 unit, menunjukkan
-              bahwa lebih banyak orang memilih dan puas dengan performanya.
-              <br /> Rekomendasi 2 memang memiliki layar yang lebih besar, yaitu
-              65", dan berat 21,7 kg, namun dengan harga Rp12.625.225, kamu
-              perlu mengeluarkan budget hampir dua kali lipat dari TV 2. Dari
-              segi popularitas dan kepuasan pengguna, TV 2 lebih unggul dengan
-              rating dan jumlah penjualan yang lebih tinggi.
-              <br /> Jika kamu mencari TV berkualitas dengan harga yang lebih
-              ramah di kantong dan tetap mendapatkan ulasan positif dari
-              pengguna, Rekmendasi ke 1 adalah pilihan yang cerdas.
-            </p>
+          <div className="col-span-2 px-4">
+            <div
+              className="text-justify"
+              dangerouslySetInnerHTML={{
+                __html: formattedDescription(analysisResults.comparison_result),
+              }}
+            />
           </div>
-          <div className="w-full hidden lg:block px-4 pb-4">
+          <div className="w-full hidden lg:block px-4 pb-4 my-auto">
             <PurchaseCard />
           </div>
         </div>
-        <div className="w-full block lg:hidden p-4">
+        <div className="w-full block lg:hidden p-4 mx-auto">
           <PurchaseCard />
         </div>
       </div>
