@@ -21,9 +21,15 @@ function AnalysisResults() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productPromises = productIds.map(id => 
-          axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`).then(response => response.data)
-        );
+        const productPromises = productIds.map(async (id) => {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            },
+          });
+          return response.data;
+        });
+  
         const productData = await Promise.all(productPromises);
         setProducts(productData);
       } catch (error) {
@@ -31,17 +37,21 @@ function AnalysisResults() {
         setError("Failed to load product data. Please try again later.");
       }
     };
-
+  
     if (productIds.length > 0) {
       fetchProducts();
     }
   }, [productIds]);
+  
 
   useEffect(() => {
     const fetchAnalysisResults = async () => {
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai-best-products`, {
-          product_ids: productIds
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          },
+          product_ids: productIds,
         });
         setAnalysisResults(response.data);
       } catch (error) {
@@ -86,7 +96,7 @@ function AnalysisResults() {
       <div className="grid md:grid-cols-3 gap-x-3 w-fit justify-items-center mx-auto">
         {products.map((product, index) => (
           <div className="mb-3" key={product.product_id}>
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
               {product.product_id == analysisResults.best_product_id ?
                 <img src={CrownImage} style={{ width: "55px" }} alt="Crown" />
                 : <div style={{ width: "55px" }}></div>
@@ -94,8 +104,7 @@ function AnalysisResults() {
                 <p>Rekomendasi</p>
                 : <p>Bukan</p>
               }
-            </div>
-            {/* "03c1cf98-2721-4eaf-ab90-b7ee793ea2e6" */}
+            </div> */}
             <div className="border border-cyan-600 p-2 pt-0 bg-cyan-600 rounded-md w-fit">
               <h2 className="text-sm text-center text-white font-medium my-0.5">
                 Produk {index + 1}

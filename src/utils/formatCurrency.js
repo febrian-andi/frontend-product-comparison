@@ -1,5 +1,9 @@
 function formatCurrency(number) {
-  let numStr = number.toString();
+  let numStr = number;
+  
+  if (typeof number !== "string") {
+    numStr = number.toString();
+ }
 
   let formatted = numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 

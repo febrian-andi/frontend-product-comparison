@@ -17,7 +17,11 @@ function ProductComparison() {
       const fetchProductDetails = async () => {
         try {
           const productDetailsPromises = storedProducts.map(product => 
-            axios.get(`${import.meta.env.VITE_API_URL}/products/${product.product_id}`)
+            axios.get(`${import.meta.env.VITE_API_URL}/products/${product.product_id}`, {
+              headers: {
+                'ngrok-skip-browser-warning': 'true',
+              },
+            })
           );
           const results = await Promise.all(productDetailsPromises);
           const details = results.map(result => result.data);
@@ -36,7 +40,7 @@ function ProductComparison() {
       prevProducts.filter((product) => product.product_id !== productId)
     );
   };
-   
+
   return (
     <>
       <div>

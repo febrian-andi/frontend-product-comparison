@@ -10,9 +10,14 @@ const useGetData = (url) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      });
       setData(response.data);
     } catch (err) {
+      console.log(err)
       setError(err);
     } finally {
       setLoading(false);
