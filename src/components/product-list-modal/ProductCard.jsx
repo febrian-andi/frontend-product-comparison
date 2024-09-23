@@ -4,7 +4,7 @@ import formatCurrency from "../../utils/formatCurrency";
 function ProductCard({ product, onClick }) {
 
   return (
-    <div onClick={onClick} className="bg-white rounded-lg py-3 shadow w-44 border border-gray-200 transition-transform transform hover:scale-105 hover:bg-gray-300 hover:cursor-pointer">
+    <div onClick={onClick} className="bg-white rounded-lg py-3 shadow w-44 border border-gray-200 hover:bg-gray-300 hover:cursor-pointer">
       <div>
         <div className="flex justify-center py-2">
           <img
