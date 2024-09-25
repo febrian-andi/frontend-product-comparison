@@ -38,19 +38,19 @@ function ProductListModal({ isOpenModal, toggleModal }) {
           try {
             data = JSON.parse(data.replace(/NaN/g, "null"));
             console.log(typeof data);
-            setError("");
+            setError(null);
           } catch (parseError) {
-            // console.error("Gagal mengurai data JSON:", parseError);
+            console.error("Gagal mengurai data JSON:", parseError);
             setError("Data tidak valid.");
             setIsLoading(false);
             return;
           }
         }
         setProducts(data);
-        setError("");
+        setError(null);
         setProductsToShow(20);
       } catch (error) {
-        // console.log(error.response.data.message);
+        console.log(error.response.data.message);
         setProducts([]);
         if (
           error.response?.data?.message ===
@@ -76,13 +76,14 @@ function ProductListModal({ isOpenModal, toggleModal }) {
               productList[0].product_id
             }`
           );
-          console.log(response.data);
+          // console.log(response.data);
           setProducts(response.data);
         } else if (!searchProduct && productList.length === 0) {
           setProducts([]);
         }
+        setError(null)
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         setError(error.response?.data?.message || "Terjadi Kesalahan");
       } finally {
         setIsLoading(false);
@@ -182,11 +183,16 @@ function ProductListModal({ isOpenModal, toggleModal }) {
 
           {isLoading && renderLoading()}
           {inputProductName && error && renderError()}
-          {products.length < 1 &&
+          {products?.length < 1 &&
             !error &&
             !searchProduct &&
             renderEmptyState()}
-
+          {!isLoading && products?.length > 0 && !searchProduct &&
+            <p className="text-md font-bold mb-1">Produk serupa</p>
+          }
+          {!isLoading && products?.length > 0 && searchProduct &&
+            <p className="text-md font-bold mb-1">Produk berdasarkan keyword "{searchProduct}"</p>
+          }
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 p-2 overflow-y-auto h-4/6 md:max-h-full justify-items-center">
             {!isLoading &&
               products
