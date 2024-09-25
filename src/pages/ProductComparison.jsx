@@ -32,8 +32,8 @@ function ProductComparison() {
           const results = await Promise.all(productDetailsPromises);
           const details = results.map((result) => result.data);
           setProducts(details.filter(Boolean));
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error(error);
         } finally {
           setIsLoading(false);
         }
@@ -54,7 +54,7 @@ function ProductComparison() {
       {isLoading && (
         <div className="flex justify-center items-center">
           <ArrowPathIcon className="w-10 h-10 animate-spin text-gray-500" />
-          <p className="text-center my-auto ml-1">Loading data...</p>
+          <p className="text-center my-auto ml-1">Memuat data...</p>
         </div>
       )}
       {!isLoading && (

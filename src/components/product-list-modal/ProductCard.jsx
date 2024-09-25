@@ -9,7 +9,7 @@ function ProductCard({ product, onClick }) {
         <div className="flex justify-center py-2">
           <img
             src={product.image_srcset}
-            alt="Samsung Smart TV"
+            alt={product.product_name}
             className="h-20 rounded-lg"
           />
         </div>

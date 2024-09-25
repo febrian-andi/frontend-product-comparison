@@ -1,4 +1,5 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
+import WarningProduct from "./WarningProduct";
 
 function ProductItem({ product, onRemove }) {
   const handleRemove = () => {
@@ -8,7 +9,6 @@ function ProductItem({ product, onRemove }) {
         (item) => item.product_id !== product.product_id
       );
       localStorage.setItem("product-list", JSON.stringify(updatedProducts));
-      
       onRemove(product.product_id);
     }
   };
@@ -16,10 +16,13 @@ function ProductItem({ product, onRemove }) {
   return (
     <td className="border px-4 py-2">
       <div className="flex flex-col items-center">
+        <div className="mb-3">
+          <WarningProduct productId={product.product_id}/>
+        </div>
         <img
           src={product.image_srcset}
           alt={product.product_name}
-          className="w-32 h-32 object-cover"
+          className="w-32 h-32 object-contain"
         />
         <h2 className="font-semibold text-center mt-2 h-24 w-64 line-clamp-4">
           {product.product_name}
