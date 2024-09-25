@@ -46,9 +46,16 @@ function WarningProduct({ productId }) {
 
   const checkProductSold = () => {
     if (product?.jumlah_terjual === 0) {
-      return "Belum ada barang terjual";
+      return "Belum ada barang yang terjual";
     } else if (product?.jumlah_terjual < 9) {
       return `Barang yang terjual cukup sedikit yaitu ${product.jumlah_terjual}`;
+    }
+    return null;
+  };
+  
+  const checkProductStock = () => {
+    if (product?.stok === 0 || product?.stok === null) {
+      return "Stok barang habis";
     }
     return null;
   };
@@ -56,11 +63,13 @@ function WarningProduct({ productId }) {
   useEffect(() => {
     const ratingWarning = checkProductRating();
     const productSoldWarning = checkProductSold();
+    const productStockWarning = checkProductStock();
 
-    if (ratingWarning || productSoldWarning) {
+    if (ratingWarning || productSoldWarning || productStockWarning) {
       setWarningProduct({
         productRating: ratingWarning,
         productSold: productSoldWarning,
+        productStock: productStockWarning,
       });
     } else {
       setWarningProduct(null);
@@ -97,6 +106,11 @@ function WarningProduct({ productId }) {
               {warningProduct.productSold && (
                 <li className="text-sm font-medium">
                   - {warningProduct.productSold}
+                </li>
+              )}
+              {warningProduct. productStock && (
+                <li className="text-sm font-medium">
+                  - {warningProduct.productStock}
                 </li>
               )}
             </ul>
