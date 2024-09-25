@@ -41,7 +41,7 @@ function AnalysisResults() {
     if (productIds.length > 0) {
       fetchProducts();
     }
-  }, [productIds]);
+  }, []);
   
 
   useEffect(() => {
