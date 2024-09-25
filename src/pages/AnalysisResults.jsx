@@ -16,12 +16,12 @@ function AnalysisResults() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const productId = queryParams.get("product_id")?.split(",") || [];
+  const productIds = queryParams.get("product_ids")?.split(",") || [];
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productPromises = productId.map(async (id) => {
+        const productPromises = productIds.map(async (id) => {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`, {
             headers: {
               'ngrok-skip-browser-warning': 'true',
@@ -39,7 +39,7 @@ function AnalysisResults() {
       }
     };
   
-    if (productId.length > 0) {
+    if (productIds.length > 0) {
       fetchProducts();
     }
   }, []);
@@ -53,7 +53,7 @@ function AnalysisResults() {
           headers: {
             'ngrok-skip-browser-warning': 'true',
           },
-          product_ids: productId,
+          product_ids: productIds,
         });
         setAnalysisResults(response.data);
         setError(null);
@@ -65,7 +65,7 @@ function AnalysisResults() {
       }
     };
 
-    if (productId.length > 0) {
+    if (productIds.length > 0) {
       fetchAnalysisResults();
     }
   }, []);
