@@ -57,7 +57,7 @@ function ProductTable({ products, toggleModal, onRemove }) {
               <td className="border px-4 py-2 text-left font-medium">Rating</td>
               {products.map((product, index) => (
                 <td key={index} className="border px-4 py-2 text-center">
-                  {product.rating ? `${product.rating}/10` : "-"}
+                  {product.rating ? `${product.rating}/5` : "-"}
                 </td>
               ))}
             </tr>
@@ -73,7 +73,7 @@ function ProductTable({ products, toggleModal, onRemove }) {
               <td className="border px-4 py-2 text-left font-medium">Stok</td>
               {products.map((product, index) => (
                 <td key={index} className="border px-4 py-2 text-center">
-                  {product.stok !== null ? product.stok : "-"}
+                  {product.stok !== null ? product.stok : "0"}
                 </td>
               ))}
             </tr>

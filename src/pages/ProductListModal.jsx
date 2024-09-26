@@ -128,7 +128,7 @@ function ProductListModal({ isOpenModal, toggleModal }) {
 
   const renderError = () => (
     <div className="flex justify-center items-center">
-      <p className="text-gray-500">{error}</p>
+      <p className="text-gray-500">Terjadi kesalahan.<br/> Silahkan muat ulang halaman.</p>
     </div>
   );
 

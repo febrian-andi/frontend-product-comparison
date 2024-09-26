@@ -13,6 +13,7 @@ function AnalysisResults() {
   const [analysisResults, setAnalysisResults] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -29,7 +30,7 @@ function AnalysisResults() {
           });
           return response.data;
         });
-  
+        
         const productData = await Promise.all(productPromises);
         setProducts(productData);
         setError(null);
@@ -70,6 +71,19 @@ function AnalysisResults() {
     }
   }, []);
 
+  useEffect(() => {
+    if (analysisResults && products.length > 0) {
+      const filteredData = products.find(product => product.product_id === analysisResults.best_product_id);
+      setSelectedProduct(filteredData);
+    } else {
+      setSelectedProduct(products[0]);
+    }
+  }, [analysisResults, products]);
+
+  const handleProductClickInPurchaseCard = (product) => {
+    setSelectedProduct(product);
+  };
+
   if (isLoading) {
     return <AnalysisProcess />;
   }
@@ -102,20 +116,21 @@ function AnalysisResults() {
         <div className="grid md:grid-cols-3 gap-x-3 w-fit justify-items-center mx-auto">
           {products?.map((product, index) => (
             <div className="mb-3" key={product.product_id}>
-              {/* <div className="flex justify-center">
-                {product.product_id == analysisResults.best_product_id ?
-                  <img src={CrownImage} style={{ width: "55px" }} alt="Crown" />
-                  : <div style={{ width: "55px" }}></div>
-                }{product.product_id == analysisResults.best_product_id ?
-                  <p>Rekomendasi</p>
-                  : <p>Bukan</p>
+              <div className="flex justify-center">
+                {product.product_id === analysisResults.best_product_id ?
+                  <img src={CrownImage} style={{ height: "55px" }} alt="Crown" />
+                  : <div style={{ height: "55px" }}></div>
                 }
-              </div> */}
+              </div>
               <div className="border border-cyan-600 p-2 pt-0 bg-cyan-600 rounded-md w-fit">
                 <h2 className="text-sm text-center text-white font-medium my-0.5">
                   Produk {index + 1}
                 </h2>
-                <ProductCard product={product} />
+                <ProductCard
+                  product={product}
+                  selectedProduct={selectedProduct}
+                  onClick={() => handleProductClickInPurchaseCard(product)}
+                />
               </div>
             </div>
           ))}
@@ -134,11 +149,11 @@ function AnalysisResults() {
               />
             </div>
             <div className="w-full hidden lg:block px-4 pb-4 my-auto">
-              <PurchaseCard />
+              <PurchaseCard product={selectedProduct}/>
             </div>
           </div>
           <div className="w-full block lg:hidden p-4 mx-auto">
-            <PurchaseCard />
+            <PurchaseCard product={selectedProduct}/>
           </div>
         </div>
       </div>
